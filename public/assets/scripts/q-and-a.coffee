@@ -6,9 +6,10 @@ after = (time, fn, args...) -> setTimeout fn, time, args...
   $container = $('#q-and-a-container')
 
   $question = null
+  $questionText = null
+  $questionRight = null
+  $questionYours = null
   $answerInput = null
-  question = null
-  rightAnswer = null
 
   passOptions = {}
 
@@ -40,14 +41,17 @@ after = (time, fn, args...) -> setTimeout fn, time, args...
   do -> # add question and answer elements
 
     $question = $('<div class="question news"></div>')
+    $questionText = $('<div class="question-text"></div>')
+    $questionRight = $('<div class="question-right"></div>')
+    $questionYours = $('<div class="question-yours"></div>')
+    $question.append $questionText, $questionRight, $questionYours
 
     $answerForm = $('<form class="answer"></form>')
     $answerInput = $('<input type="text" placeholder="..."></input>')
     $answerForm.append $answerInput
 
     $answerForm.on 'submit', ->
-      if $.trim $answerInput.val()
-        checkAnswer($answerInput.val())
+      checkAnswer($answerInput.val())
       return false # don't really submit
 
     $container.append $question, $answerForm
@@ -65,24 +69,29 @@ after = (time, fn, args...) -> setTimeout fn, time, args...
       else
         passOptions.answerLanguage = 'english'
 
-    output = options.ask(passOptions)
+    question = options.ask(passOptions)
 
-    question = output.question
-    rightAnswer = output.answer
-
-    $question.text(question).removeClass('good bad')
+    $question.removeClass 'good bad'
+    $questionText.text(question)
+    $questionRight.text('')
+    $questionYours.text('')
     $answerInput.val('').focus()
 
-  checkAnswer = (answer) ->
-    yourAnswer = answer.toLowerCase()
-    $question.text(question).removeClass('good bad')
-    $question.text(question).append ": <strong>#{rightAnswer}</strong>"
-    if yourAnswer isnt rightAnswer.toString().toLowerCase()
-      $question.addClass 'bad'
-      $question.append " (<strike>#{yourAnswer}</strike>)"
-      $answerInput.val('')
-    else
+  checkAnswer = (yourAnswer) ->
+
+    correct = options.check(yourAnswer)
+
+    $question.removeClass 'good bad'
+    $questionRight.text(options.rightAnswer())
+
+    if correct
+      $questionYours.text('')
       $question.addClass 'good'
       after 1000, newQuestion
+
+    else
+      $questionYours.text(yourAnswer)
+      $question.addClass 'bad'
+      $answerInput.val('')
 
   newQuestion()

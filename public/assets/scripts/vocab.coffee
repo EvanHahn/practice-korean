@@ -5,6 +5,8 @@ $(document).ready ->
   jsonData = $.parseJSON($('#vocab-data').html())
   words = jsonData.words
 
+  answer = null
+
   startAsking
 
     languageSelect: true
@@ -16,4 +18,11 @@ $(document).ready ->
       question = word[options.questionLanguage]
       answer = word[options.answerLanguage]
 
-      return { question, answer }
+      return question
+
+    check: (yourAnswer) ->
+      yourAnswer = $.trim yourAnswer.toLowerCase()
+      theAnswer = answer.toLowerCase()
+      return yourAnswer is theAnswer
+
+    rightAnswer: -> answer

@@ -27,7 +27,7 @@ TENS = [
 getKorean = (n) ->
   tens = Math.floor(n / 10)
   ones = n - (tens * 10)
-  if ones and tens
+  if tens and ones
     return TENS[tens] + ' ' + ONES[ones]
   else
     return TENS[tens] + ONES[ones]
@@ -37,6 +37,8 @@ random = (min, max) ->
   return Math.floor(Math.random() * size) + min
 
 $(document).ready ->
+
+  answer = null
 
   startAsking
 
@@ -54,4 +56,11 @@ $(document).ready ->
         question = number
         answer = koreanNumber
 
-      return { question, answer }
+      return question
+
+    check: (yourAnswer) ->
+      yourAnswer = yourAnswer.replace(/\s+/g, '')
+      theAnswer = answer.replace(/\s+/g, '')
+      return yourAnswer is theAnswer
+
+    rightAnswer: -> answer
