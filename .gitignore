@@ -1,3 +1,14 @@
+# ignore this garbage
+tmp
+
+# old files
 www
 
+# project-type files
+.env
+node_modules
+npm-debug.log
+
+# system files
 .DS_Store
+Thumbs.db

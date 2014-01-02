@@ -1,3 +1,5 @@
+startAsking = require './q-and-a.coffee'
+
 ONES = [
   '', # nothing in the ones place
   '하나',
@@ -59,8 +61,8 @@ $(document).ready ->
       return question
 
     check: (yourAnswer) ->
-      yourAnswer = yourAnswer.replace(/\s+/g, '')
-      theAnswer = answer.replace(/\s+/g, '')
+      yourAnswer = yourAnswer.toString().replace(/\s+/g, '')
+      theAnswer = answer.toString().replace(/\s+/g, '')
       return yourAnswer is theAnswer
 
     rightAnswer: -> answer

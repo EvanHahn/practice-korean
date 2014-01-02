@@ -1,7 +1,7 @@
-sample = (array) -> array[Math.floor(Math.random() * array.length)]
-after = (time, fn, args...) -> setTimeout fn, time, args...
+sample = require './lib/sample.coffee'
+after = require './lib/after.coffee'
 
-@startAsking = (options) ->
+module.exports = (options) ->
 
   $container = $('#q-and-a-container')
 

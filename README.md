@@ -8,8 +8,7 @@ I don't speak much Korean, so any help is welcome!
 Hacking on this
 ---------------
 
-Before you start, install [Harp](http://harpjs.com/docs/quick-start).
-
-When developing, `harp server public` should be plenty.
-
-To deploy, simply type `harp compile public www` in the main directory. `www/` will be full of all the needed files.
+    # install node, npm, and Heroku's foreman
+    # clone the repo
+    npm install
+    npm start

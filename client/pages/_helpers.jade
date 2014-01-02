@@ -1,0 +1,11 @@
+mixin stylesheet(url)
+  link(href=url, rel="stylesheet", type="text/css")
+
+mixin javascript(url)
+  script(src=url, type="text/javascript")
+
+mixin jquery
+  if process.env.NODE_ENV == 'production'
+    +javascript("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+  else
+    +javascript("/jquery.js")

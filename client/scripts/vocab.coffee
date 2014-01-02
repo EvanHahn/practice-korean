@@ -1,4 +1,5 @@
-sample = (array) -> array[Math.floor(Math.random() * array.length)]
+sample = require './lib/sample.coffee'
+startAsking = require './q-and-a.coffee'
 
 $(document).ready ->
 

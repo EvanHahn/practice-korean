@@ -1,0 +1,26 @@
+extends _layout
+
+append body
+
+  nav
+    .left
+      a.back.btn(href="/")
+    .title Weekdays
+
+  #q-and-a-container
+
+  script#vocab-data(type="application/json").
+    {
+      "words": [
+        { "korean": "월요일", "english": "Monday" },
+        { "korean": "화요일", "english": "Tuesday" },
+        { "korean": "수요일", "english": "Wednesday" },
+        { "korean": "목요일", "english": "Thursday" },
+        { "korean": "금요일", "english": "Friday" },
+        { "korean": "토요일", "english": "Saturday" },
+        { "korean": "일요일", "english": "Sunday" }
+      ]
+    }
+
+  +jquery()
+  +javascript("/vocab.js")

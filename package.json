@@ -1,0 +1,37 @@
+{
+  "name": "practice-korean",
+  "description": "practice...korean",
+  "author": "Evan Hahn",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "./node_modules/.bin/mocha",
+    "postinstall": "./node_modules/.bin/grunt",
+    "start": "foreman start"
+  },
+  "dependencies": {
+    "coffee-script": "1.6.x",
+    "coffeeify": "0.5.x",
+    "express": "3.4.x",
+    "grunt": "0.4.x",
+    "grunt-browserify": "1.3.x",
+    "grunt-cli": "0.1.x",
+    "grunt-contrib-jade": "0.9.x",
+    "grunt-contrib-stylus": "0.11.x",
+    "grunt-contrib-uglify": "0.2.x",
+    "grunt-contrib-watch": "0.5.x",
+    "jade": "1.0.x",
+    "load-grunt-tasks": "0.2.x",
+    "marked": "~0.3.0",
+    "stylus": "0.41.x"
+  },
+  "devDependencies": {
+    "chai": "1.8.x",
+    "mocha": "1.16.x",
+    "supertest": "0.8.x"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.3.x"
+  }
+}
