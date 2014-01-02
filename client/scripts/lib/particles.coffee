@@ -16,12 +16,7 @@ eulrlega = (word) ->
 chooseBetween = (a, b) -> (word) ->
   if eulrlega(word) then a else b
 
-particle =
+module.exports =
   object: chooseBetween '을', '를'
   topic: chooseBetween '은', '는'
   subject: chooseBetween '이', '가'
-
-if module?.exports?
-  module.exports = particle
-else
-  @particle = particle
