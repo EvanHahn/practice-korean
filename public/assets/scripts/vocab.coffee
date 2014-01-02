@@ -13,8 +13,6 @@ $(document).ready ->
 
       word = sample words
 
-      console.assert(word)
-
       question = word[options.questionLanguage]
       answer = word[options.answerLanguage]
 
