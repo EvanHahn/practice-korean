@@ -6,6 +6,14 @@
 
 @import components
 
+selection()
+  background-color korea-red
+  color white
+::selection
+  selection()
+::-moz-selection
+  selection()
+
 body
   width 100%
   max-width 600px
@@ -38,9 +46,11 @@ form.options
   padding 1em
   background-color light-grey
 
-.vocab-question
-  margin-bottom 1em
+#q-and-a-container
 
-.vocab-answer
-  input
-    width 100%
+  .question
+    margin-bottom 1em
+
+  .answer
+    input
+      width 100%
