@@ -1,17 +1,46 @@
+@charset 'UTF-8'
+
 @import normalize
 @import my-reset
 @import variables
 
+@import components
+
 body
-  width 95%
+  width 100%
   max-width 600px
   margin 0 auto
 
 body > nav
-  padding .5em 0
-  border-bottom 5px solid korea-red
-  color korea-blue
+  display table
+  width 100%
+  padding .25em 0
 
-  h1
-    text-transform uppercase
+  .left, .right, .title
+    display table-cell
+    vertical-align middle
     text-align center
+
+  .left, .right
+    max-width 25%
+
+  .title
+    text-transform uppercase
+    font-size 36pt
+    font-weight 900
+
+.back
+  &:before
+    content: '\25c0'
+
+form.options
+  margin-bottom 1em
+  padding 1em
+  background-color light-grey
+
+.vocab-question
+  margin-bottom 1em
+
+.vocab-answer
+  input
+    width 100%

@@ -1,0 +1,34 @@
+input, textarea, button, select, .btn
+  vertical-align middle
+  display inline-block
+  padding .5em 1em
+  border 1px solid light-grey
+  background-color white
+  outline none
+  &:focus
+    border-color korea-blue
+
+button, .btn
+  border none
+  color white
+  cursor pointer
+  background-color korea-red
+  &:hover
+    background-color lighten(korea-red, 25%)
+
+.hidden
+  display none
+
+.news
+  padding 1em
+  background-color korea-blue-light
+  border 1px solid korea-blue
+  transition all .1s ease
+
+  &.good
+    background-color light-green
+    border-color green
+
+  &.bad
+    background-color korea-red-light
+    border-color korea-red

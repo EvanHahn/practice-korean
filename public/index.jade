@@ -1,2 +1,17 @@
+include _helpers
+
 nav
-  h1 Practice 한국어
+  .title Practice 한국어
+
+section.intro
+  :markdown
+    I was studying Korean and couldn't find a website to practice with, so I made one!
+
+noscript(class="bad news") You'll need JavaScript for this website, sorry!
+
+.choices
+
+  mixin choice(href, name)
+    a(class="btn", href=href)= name
+
+  +choice("weekdays", "Days of the week")
