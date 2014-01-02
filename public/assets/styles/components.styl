@@ -3,6 +3,8 @@ input, textarea, button, select, .btn
   display inline-block
   padding .5em 1em
   border 1px solid light-grey
+  border-left 0
+  border-right 0
   background-color white
   outline none
   &:focus
@@ -22,7 +24,8 @@ button, .btn
 .news
   padding 1em
   background-color korea-blue-light
-  border 1px solid korea-blue
+  border-top 1px solid korea-blue
+  border-bottom @border-top
   transition all .1s ease
 
   &.good
