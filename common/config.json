@@ -1,7 +1,7 @@
 {
 
-  "compiledPages": [ "index", "weekdays", "native-numbers", "sentences" ],
-  "compiledScripts": [ "vocab", "native-numbers", "sentences" ],
+  "compiledPages": [ "index", "weekdays", "native-numbers", "present-tenses" ],
+  "compiledScripts": [ "vocab", "native-numbers", "present-tenses" ],
   "compiledStyles": [ "the" ]
 
 }
