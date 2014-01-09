@@ -39,6 +39,53 @@ makeKorean = (sentence) ->
     result.push adjective
   return result.join(' ') + '.'
 
+checkEnglish = (sentence, answer) ->
+  words = answer.words()
+  subject = words.first()
+  debugger
+  return false if subject isnt sentence.subject.english.toLowerCase()
+  if sentence.verb?
+    rightVerb = englishConjugate(subject, sentence.verb.english)
+    if sentence.object?
+      rightObject = sentence.object.english
+      pluralResult = do ->
+        word = words[2]
+        return true if word is rightObject
+        return true if word.pluralize() is rightObject
+        return true if word is rightObject.pluralize()
+        return null
+      return pluralResult if pluralResult?
+      return false if words.length isnt 3
+    else
+      return false if words.length isnt 2
+  else
+    rightVerb = englishConjugate(sentence.subject.english, toBe)
+    rightAdjective = sentence.adjective.english
+    return false if words.length isnt 3
+    return false if words[2] isnt rightAdjective
+  return false if words[1] isnt rightVerb
+  return true
+
+checkKorean = (sentence, answer) ->
+  words = answer.words()
+  last = words.last()
+  if sentence.verb?
+    return false if last isnt sentence.verb.korean
+    rightSubject = sentence.subject.korean + particles.subject(sentence.subject.korean)
+    if sentence.object?
+      firstTwo = words.first 2
+      rightObject = sentence.object.korean + particles.object(sentence.object.korean)
+      return false if firstTwo.indexOf(rightSubject) is -1
+      return false if firstTwo.indexOf(rightObject) is -1
+      return false if words.length isnt 3
+    else
+      return false if words.first() isnt rightSubject
+      return false if words.length isnt 2
+  else
+    return false if last isnt sentence.adjective.korean
+    return false if words.length isnt 2
+  return true
+
 $(document).ready ->
 
   jsonData = $.parseJSON($('#sentence-data').html())
@@ -73,8 +120,18 @@ $(document).ready ->
         return makeEnglish sentence
 
     check: (yourAnswer) ->
-      yourAnswer = yourAnswer.compact().toLowerCase()
-      return false
+      return false if yourAnswer.isBlank()
+      answer = yourAnswer.compact()
+      punctuation = /[!-\/:-@]/g
+      if answerLanguage is 'korean'
+        answer = answer.replace(punctuation, '')
+        checkKorean sentence, answer
+      else
+        answer = answer.toLowerCase()
+        answer = answer.replace(/i'm/g, 'i am')
+        answer = answer.replace(/'s/g, ' is')
+        answer = answer.replace(punctuation, '')
+        checkEnglish sentence, answer
 
     rightAnswer: ->
       if answerLanguage is 'korean'
