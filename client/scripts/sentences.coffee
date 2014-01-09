@@ -48,15 +48,13 @@ $(document).ready ->
   adjectives = jsonData.adjectives
 
   sentence = null
-  aCorrectAnswer = null
+  answerLanguage = null
 
   startAsking
 
     languageSelect: true
 
     ask: (options) ->
-
-      options.questionLanguage = 'korean' # TEMP TODO REMOVE
 
       sentence = {}
 
@@ -68,15 +66,18 @@ $(document).ready ->
       else
         sentence.adjective = adjectives.sample()
 
+      answerLanguage = options.answerLanguage
       if options.questionLanguage is 'korean'
-        aCorrectAnswer = makeEnglish sentence
         return makeKorean sentence
       else
-        aCorrectAnswer = makeKorean sentence
         return makeEnglish sentence
 
     check: (yourAnswer) ->
       yourAnswer = yourAnswer.compact().toLowerCase()
       return false
 
-    rightAnswer: -> aCorrectAnswer
+    rightAnswer: ->
+      if answerLanguage is 'korean'
+        makeKorean sentence
+      else
+        makeEnglish sentence
