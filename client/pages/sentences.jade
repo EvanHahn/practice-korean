@@ -1,0 +1,55 @@
+extends _layout
+
+append body
+
+  nav
+    .left
+      a.back.btn(href="/")
+    .title Sentences
+
+  #q-and-a-container
+
+  script#sentence-data(type="application/json").
+    {
+
+      "subjects": [
+        { "english": "I", "korean": "제" },
+        { "english": "Yumi", "korean": "유미" },
+        { "english": "Mina", "korean": "미나" }
+      ],
+
+      "objects": [
+        { "english": "food", "korean": "음식" },
+        { "english": "table", "korean": "탁자" },
+        { "english": "car", "korean": "차" },
+        { "english": "chair", "korean": "의자" }
+      ],
+
+      "verbs": [
+        {
+          "english": { "i": "eat", "you": "eat", "it": "eats" },
+          "korean": "먹어요",
+          "allowsObjects": true
+        },
+        {
+          "english": { "i": "write", "you": "write", "it": "writes" },
+          "korean": "써요",
+          "allowsObjects": false
+        }
+      ],
+
+      "adjectives": [
+        {
+          "english": "late",
+          "korean": "늦어요"
+        },
+        {
+          "english": "good",
+          "korean": "좋아요"
+        }
+      ]
+
+    }
+
+  +jquery()
+  +javascript("/sentences.js")

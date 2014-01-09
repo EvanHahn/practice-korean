@@ -23,7 +23,8 @@
     "jade": "1.0.x",
     "load-grunt-tasks": "0.2.x",
     "marked": "~0.3.0",
-    "stylus": "0.41.x"
+    "stylus": "0.41.x",
+    "sugar": "1.4.x"
   },
   "devDependencies": {
     "chai": "1.8.x",
