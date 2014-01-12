@@ -1,6 +1,6 @@
 require 'sugar'
 startAsking = require './q-and-a.coffee'
-particles = require './lib/particles.coffee'
+korean = require './lib/korean/index.coffee'
 
 coinFlip = -> !!Math.round(Math.random())
 
@@ -29,13 +29,11 @@ makeEnglish = (sentence) ->
 
 makeKorean = (sentence) ->
   subject = sentence.subject.korean
-  subjectParticle = particles.subject(subject)
-  result = [subject + subjectParticle]
+  result = [korean.add.subject(subject)]
   if sentence.verb?
     if sentence.object?
       object = sentence.object.korean
-      objectParticle = particles.object(object)
-      result.push(object + objectParticle)
+      result.push(korean.add.object(object))
     verb = sentence.verb.korean
     result.push verb
   else
@@ -76,10 +74,10 @@ checkKorean = (sentence, answer) ->
   last = words.last()
   if sentence.verb?
     return false if last isnt sentence.verb.korean
-    rightSubject = sentence.subject.korean + particles.subject(sentence.subject.korean)
+    rightSubject = sentence.subject.korean + korean.subject(sentence.subject.korean)
     if sentence.object?
       firstTwo = words.first 2
-      rightObject = sentence.object.korean + particles.object(sentence.object.korean)
+      rightObject = sentence.object.korean + korean.object(sentence.object.korean)
       return false if firstTwo.indexOf(rightSubject) is -1
       return false if firstTwo.indexOf(rightObject) is -1
       return false if words.length isnt 3

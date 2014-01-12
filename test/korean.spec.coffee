@@ -1,12 +1,12 @@
 require('chai').should()
 
-particles = require '../client/scripts/lib/particles'
+particles = require '../client/scripts/lib/korean'
 add = particles.add
 object = particles.object
 topic = particles.topic
 subject = particles.subject
 
-describe 'Korean particle finder', ->
+describe 'Korean module', ->
 
   describe 'object function', ->
 
