@@ -13,10 +13,23 @@ eulrlega = (word) ->
   else
     return true
 
-chooseBetween = (a, b) -> (word) ->
+chooseBetween = (a, b, word) ->
   if eulrlega(word) then a else b
 
-module.exports =
-  object: chooseBetween '을', '를'
-  topic: chooseBetween '은', '는'
-  subject: chooseBetween '이', '가'
+addTo = (fn) -> (word) -> word + fn(word)
+
+object = (word) -> chooseBetween '을', '를', word
+topic = (word) -> chooseBetween '은', '는', word
+subject = (word) -> chooseBetween '이', '가', word
+
+add =
+  object: (word) -> word + object(word)
+  topic: (word) -> word + topic(word)
+  subject: (word) ->
+    particle = subject word
+    if word is '저'
+      return '제' + particle
+    else
+      return word + particle
+
+module.exports = { object, topic, subject, add }
