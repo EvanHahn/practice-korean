@@ -4,13 +4,17 @@ particles = require './lib/particles.coffee'
 
 coinFlip = -> !!Math.round(Math.random())
 
+ENGLISH_ARTICLES = ['the', 'a', 'an']
 toBe = { i: 'am', you: 'are', it: 'is' }
 
 englishConjugate = (subject, verb) -> verb[subject.toLowerCase()] or verb.it
 
 makeEnglish = (sentence) ->
   subject = sentence.subject.english
-  result = [subject]
+  if subject is subject.capitalize()
+    result = [subject.capitalize()]
+  else
+    result = ['The', subject]
   if sentence.verb?
     verb = englishConjugate(sentence.subject.english, sentence.verb.english)
     object = sentence.object?.english
@@ -40,7 +44,8 @@ makeKorean = (sentence) ->
   return result.join(' ') + '.'
 
 checkEnglish = (sentence, answer) ->
-  words = answer.words()
+  words = answer.words().exclude (word) ->
+    ENGLISH_ARTICLES.indexOf(word.toLowerCase()) isnt -1
   subject = words.first()
   debugger
   return false if subject isnt sentence.subject.english.toLowerCase()
