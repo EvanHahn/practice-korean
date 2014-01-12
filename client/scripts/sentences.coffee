@@ -95,7 +95,6 @@ $(document).ready ->
 
   jsonData = $.parseJSON($('#sentence-data').html())
   subjects = jsonData.subjects
-  objects = jsonData.objects
   verbs = jsonData.verbs
   adjectives = jsonData.adjectives
 
@@ -114,7 +113,8 @@ $(document).ready ->
 
       if coinFlip()
         sentence.verb = verbs.sample()
-        sentence.object = objects.sample() if sentence.verb.allowsObjects
+        if sentence.verb.objects? and coinFlip()
+          sentence.object = sentence.verb.objects.sample()
       else
         sentence.adjective = adjectives.sample()
 
