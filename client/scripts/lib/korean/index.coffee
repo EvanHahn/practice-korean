@@ -1,8 +1,11 @@
+sentence = require './sentence.coffee'
 particles = require './particles.coffee'
 
 module.exports =
 
-	object: particles.object
-	subject: particles.subject
-	topic: particles.topic
-	add: particles.add
+  sentence: sentence
+
+  object: particles.object
+  subject: particles.subject
+  topic: particles.topic
+  add: particles.add

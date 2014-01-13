@@ -1,12 +1,114 @@
-require('chai').should()
+should = require('chai').should()
 
-particles = require '../client/scripts/lib/korean'
-add = particles.add
-object = particles.object
-topic = particles.topic
-subject = particles.subject
+korean = require '../client/scripts/lib/korean'
 
-describe 'Korean module', ->
+add = korean.add
+object = korean.object
+topic = korean.topic
+subject = korean.subject
+
+describe 'Korean', ->
+
+  describe 'sentence module', ->
+
+    describe 'builds', ->
+
+      build = null
+      beforeEach ->
+        build = korean.sentence.build
+
+      it 'sentences with a subject and verb', ->
+        sentence = build
+          subject: { korean: '유미' }
+          verb: { korean: '노래해요' }
+        sentence.should.equal '유미가 노래해요.'
+
+      it 'sentences with 저 as the subject and a verb', ->
+        sentence = build
+          subject: { korean: '저' }
+          verb: { korean: '먹어요' }
+        sentence.should.equal '제가 먹어요.'
+
+      it 'sentences with a subject, object, and verb', ->
+        sentence = build
+          subject: { korean: '민지' }
+          object: { korean: '김치' }
+          verb: { korean: '먹어요' }
+        sentence.should.equal '민지가 김치를 먹어요.'
+
+      it 'questions with a subject and verb', ->
+        sentence = build
+          question: yes
+          subject: { korean: '유미' }
+          verb: { korean: '노래해요' }
+        sentence.should.equal '유미가 노래해요?'
+
+      it 'exclamations with a subject and verb', ->
+        sentence = build
+          exclamation: yes
+          subject: { korean: '유미' }
+          verb: { korean: '노래해요' }
+        sentence.should.equal '유미가 노래해요!'
+
+      it 'sentences with a subject and adjective', ->
+        sentence = build
+          subject: { korean: '유미' }
+          adjective: { korean: '좋아요' }
+        sentence.should.equal '유미가 좋아요.'
+
+    describe 'checks', ->
+
+      check = null
+      beforeEach ->
+        check = korean.sentence.check
+
+      it 'sentences with subject, object, verb', ->
+
+        sen =
+          subject: { korean: '민지' }
+          object: { korean: '김치' }
+          verb: { korean: '먹어요' }
+
+        check('민지가 김치를 먹어요', sen).should.be.true
+        check('민지가 김치를 먹어요.', sen).should.be.true
+        check('민지가 김치를 먹어요!', sen).should.be.true
+        check('김치를 민지가 먹어요', sen).should.be.true
+
+        check('민지가 민지가 김치를 먹어요', sen).should.be.false
+        check('민지가 김치를 먹어요?', sen).should.be.false
+        check('민지가 김치을 먹어요', sen).should.be.false
+        check('민지이 김치를 먹어요', sen).should.be.false
+        check('민지가 먹어요 김치를', sen).should.be.false
+        check('먹어요 민지가 김치를', sen).should.be.false
+        check('민지 김치를 먹어요', sen).should.be.false
+        check('민지가 김치 먹어요', sen).should.be.false
+        check('민지 김치 먹어요', sen).should.be.false
+        check('미나가 김치를 먹어요', sen).should.be.false
+        check('민지가 음식을 먹어요', sen).should.be.false
+        check('민지가 김치를 있어요', sen).should.be.false
+        check('김치를 먹어요', sen).should.be.false
+        check('민지가 먹어요', sen).should.be.false
+        check('민지가 김치를', sen).should.be.false
+
+      it 'sentences with subject and adjective', ->
+
+        sen =
+          subject: { korean: '민지' }
+          adjective: { korean: '좋아요' }
+
+        check('민지가 좋아요', sen).should.be.true
+        check('민지가 좋아요.', sen).should.be.true
+        check('민지가 좋아요!', sen).should.be.true
+
+        check('민지가 민지가 좋아요', sen).should.be.false
+        check('민지가 좋아요?', sen).should.be.false
+        check('민지는 좋아요', sen).should.be.false
+        check('민지이 좋아요', sen).should.be.false
+        check('민지가 안좋아요', sen).should.be.false
+        check('민지 좋아요', sen).should.be.false
+        check('민지가 좋아', sen).should.be.false
+        check('좋아요', sen).should.be.false
+        check('민지가', sen).should.be.false
 
   describe 'object function', ->
 

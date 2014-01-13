@@ -1,93 +1,9 @@
 require 'sugar'
 startAsking = require './q-and-a.coffee'
+english = require './lib/english/index.coffee'
 korean = require './lib/korean/index.coffee'
 
-coinFlip = -> !!Math.round(Math.random())
-
-ENGLISH_ARTICLES = ['the', 'a', 'an']
-toBe = { i: 'am', you: 'are', it: 'is' }
-
-englishConjugate = (subject, verb) -> verb[subject.toLowerCase()] or verb.it
-
-makeEnglish = (sentence) ->
-  subject = sentence.subject.english
-  if subject is subject.capitalize()
-    result = [subject.capitalize()]
-  else
-    result = ['The', subject]
-  if sentence.verb?
-    verb = englishConjugate(sentence.subject.english, sentence.verb.english)
-    object = sentence.object?.english
-    result.push verb
-    result.push object.pluralize() if object
-  else
-    verb = englishConjugate(subject, toBe)
-    adjective = sentence.adjective.english
-    result.push verb
-    result.push adjective
-  return result.join(' ') + '.'
-
-makeKorean = (sentence) ->
-  subject = sentence.subject.korean
-  result = [korean.add.subject(subject)]
-  if sentence.verb?
-    if sentence.object?
-      object = sentence.object.korean
-      result.push(korean.add.object(object))
-    verb = sentence.verb.korean
-    result.push verb
-  else
-    adjective = sentence.adjective.korean
-    result.push adjective
-  return result.join(' ') + '.'
-
-checkEnglish = (sentence, answer) ->
-  words = answer.words().exclude (word) ->
-    ENGLISH_ARTICLES.indexOf(word.toLowerCase()) isnt -1
-  subject = words.first()
-  debugger
-  return false if subject isnt sentence.subject.english.toLowerCase()
-  if sentence.verb?
-    rightVerb = englishConjugate(subject, sentence.verb.english)
-    if sentence.object?
-      rightObject = sentence.object.english
-      pluralResult = do ->
-        word = words[2]
-        return true if word is rightObject
-        return true if word.pluralize() is rightObject
-        return true if word is rightObject.pluralize()
-        return null
-      return pluralResult if pluralResult?
-      return false if words.length isnt 3
-    else
-      return false if words.length isnt 2
-  else
-    rightVerb = englishConjugate(sentence.subject.english, toBe)
-    rightAdjective = sentence.adjective.english
-    return false if words.length isnt 3
-    return false if words[2] isnt rightAdjective
-  return false if words[1] isnt rightVerb
-  return true
-
-checkKorean = (sentence, answer) ->
-  words = answer.words()
-  last = words.last()
-  if sentence.verb?
-    return false if last isnt sentence.verb.korean
-    rightSubject = sentence.subject.korean + korean.subject(sentence.subject.korean)
-    if sentence.object?
-      firstTwo = words.first 2
-      rightObject = sentence.object.korean + korean.object(sentence.object.korean)
-      return false if firstTwo.indexOf(rightSubject) is -1
-      return false if firstTwo.indexOf(rightObject) is -1
-      return false if words.length isnt 3
-    else
-      return false if words.first() isnt rightSubject
-      return false if words.length isnt 2
-  else
-    return false if last isnt sentence.adjective.korean
-    return false if words.length isnt 2
-  return true
+coinFlip = (value = .5) -> Math.random() < value
 
 $(document).ready ->
 
@@ -116,28 +32,27 @@ $(document).ready ->
       else
         sentence.adjective = adjectives.sample()
 
+      if coinFlip(.25)
+        sentence.question = yes
+      else if coinFlip(.05)
+        sentence.exclamation = yes
+
       answerLanguage = options.answerLanguage
       if options.questionLanguage is 'korean'
-        return makeKorean sentence
+        return korean.sentence.build sentence
       else
-        return makeEnglish sentence
+        return english.sentence.build sentence
 
     check: (yourAnswer) ->
       return false if yourAnswer.isBlank()
       answer = yourAnswer.compact()
-      punctuation = /[!-\/:-@]/g
       if answerLanguage is 'korean'
-        answer = answer.replace(punctuation, '')
-        checkKorean sentence, answer
+        korean.sentence.check answer, sentence
       else
-        answer = answer.toLowerCase()
-        answer = answer.replace(/i'm/g, 'i am')
-        answer = answer.replace(/'s/g, ' is')
-        answer = answer.replace(punctuation, '')
-        checkEnglish sentence, answer
+        english.sentence.check answer, sentence
 
     rightAnswer: ->
       if answerLanguage is 'korean'
-        makeKorean sentence
+        korean.sentence.build sentence
       else
-        makeEnglish sentence
+        english.sentence.build sentence
