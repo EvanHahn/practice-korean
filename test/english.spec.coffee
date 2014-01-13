@@ -180,6 +180,23 @@ describe 'English', ->
         check('Do I am eat?', sen).should.be.false
         check("Do I'm eat?", sen).should.be.false
 
+      it 'questions with an "it" subject and a verb', ->
+
+        sen =
+          question: yes
+          subject: { english: 'Mina' }
+          verb: { english: { i: 'eat', you: 'eat', it: 'eats' } }
+
+        check('Does Mina eat?', sen).should.be.true
+        check('does mina eat?', sen).should.be.true
+        check('Mina eats?', sen).should.be.true
+
+        check('Does Mina eat.', sen).should.be.false
+        check('Does Mina eat!', sen).should.be.false
+        check('Does Mina eat', sen).should.be.false
+        check('Mina eat?', sen).should.be.false
+        check('eats Mina?', sen).should.be.false
+
       it 'questions with an "I" subject and an adjective', ->
 
         sen =

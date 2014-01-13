@@ -79,11 +79,13 @@ check = (answer, sentence) ->
     result = no if answer.last() isnt '?'
 
     if sentence.verb?
-      expectedVerb = conjugate 'I', sentence.verb.english
       questionVerb = conjugate(expectedSubject, QUESTION_DO)
       if firstWord is questionVerb
         words = words.slice 1
         firstWord = words.first()
+        expectedVerb = conjugate 'I', sentence.verb.english
+      else
+        expectedVerb = conjugate sentence.subject.english, sentence.verb.english
       result = no if firstWord isnt expectedSubject
       result = no if words[1] isnt expectedVerb
       if sentence.object?
