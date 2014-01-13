@@ -48,6 +48,9 @@ build = (sentence) ->
     adjective = sentence.adjective.english
     result.push adjective
 
+  if sentence.location?
+    result.push 'at', sentence.location.english
+
   if sentence.question
     punctuation = PUNCTUATION.question
   else if sentence.exclamation
@@ -73,10 +76,15 @@ check = (answer, sentence) ->
   firstWord = words.first()
 
   expectedSubject = sentence.subject.english.toLowerCase()
+  if sentence.location?
+    expectedLocation = ['at', sentence.location.english.toLowerCase()]
 
   if sentence.question
 
     result = no if answer.last() isnt '?'
+
+    if sentence.location?
+      result = no unless Object.equal(words.last(2), expectedLocation)
 
     if sentence.verb?
       questionVerb = conjugate(expectedSubject, QUESTION_DO)
@@ -104,6 +112,12 @@ check = (answer, sentence) ->
     result = no if answer.last() is '?'
     if sentence.exclamation
       result = no if answer.last() isnt '!'
+
+    if sentence.location?
+      startsWithLocation = Object.equal(words.first(2), expectedLocation)
+      endsWithLocation = Object.equal(words.last(2), expectedLocation)
+      words = words.slice 2 if startsWithLocation
+      result = no if startsWithLocation is endsWithLocation # only one is allowed
 
     if sentence.verb?
       expectedVerb = conjugate sentence.subject.english, sentence.verb.english

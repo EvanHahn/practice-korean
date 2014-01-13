@@ -18,6 +18,13 @@ describe 'English', ->
           verb: { english: { i: 'eat' } }
         sentence.should.equal 'I eat.'
 
+      it 'sentences with an "I" subject, a location, and verb', ->
+        sentence = build
+          location: { english: 'home' }
+          subject: { english: 'I' }
+          verb: { english: { i: 'eat' } }
+        sentence.should.equal 'I eat at home.'
+
       it 'sentences with a "you" subject and verb', ->
         sentence = build
           subject: { english: 'you' }
@@ -110,25 +117,31 @@ describe 'English', ->
       beforeEach ->
         check = english.sentence.check
 
-      it 'sentences with an "I" subject, object, and verb', ->
+      it 'sentences with an "I" subject, object, location, verb', ->
 
         sen =
+          location: { english: 'home' }
           subject: { english: 'I' }
           object: { english: 'kimchi' }
           verb: { english: { i: 'eat', you: 'eat', it: 'eats' } }
 
-        check('I eat kimchi', sen).should.be.true
-        check('i eat kimchi', sen).should.be.true
-        check('i EAt kIMcHi', sen).should.be.true
-        check('I EAT KIMCHI', sen).should.be.true
-        check('I eat kimchi.', sen).should.be.true
-        check('I eat kimchi!', sen).should.be.true
+        check('I eat kimchi at home', sen).should.be.true
+        check('At home, I eat kimchi', sen).should.be.true
+        check('At home I eat kimchi', sen).should.be.true
+        check('i eat kimchi at home', sen).should.be.true
+        check('I EAT KIMCHI AT HOME', sen).should.be.true
+        check('I eat kimchi at home.', sen).should.be.true
+        check('At home, I eat kimchi', sen).should.be.true
+        check('I eat kimchi at home!', sen).should.be.true
+        check('At home, I eat kimchi!', sen).should.be.true
 
-        check('I I eat kimchi', sen).should.be.false
-        check('I eat kimchi?', sen).should.be.false
+        check('At home, I eat kimchi at home', sen).should.be.false
+        check('I I eat kimchi ate home', sen).should.be.false
+        check('I eat kimchi at home?', sen).should.be.false
         check('eat kimchi', sen).should.be.false
         check('I kimchi', sen).should.be.false
-        check('I eat', sen).should.be.false
+        check('I eat kimchi', sen).should.be.false
+        check('I eat at home', sen).should.be.false
         check('eat I kimchi', sen).should.be.false
         check('I kimchi eat', sen).should.be.false
 
@@ -196,6 +209,33 @@ describe 'English', ->
         check('Does Mina eat', sen).should.be.false
         check('Mina eat?', sen).should.be.false
         check('eats Mina?', sen).should.be.false
+
+      it 'questions with an "I" subject, a location, and a verb', ->
+
+        sen =
+          question: yes
+          location: { english: 'home' }
+          subject: { english: 'I' }
+          verb: { english: { i: 'eat', you: 'eat', it: 'eats' } }
+
+        check('Do I eat at home?', sen).should.be.true
+        check('do I eat at home?', sen).should.be.true
+        check('do i eat at home?', sen).should.be.true
+        check('I eat at home?', sen).should.be.true
+        check('i eat at home?', sen).should.be.true
+
+        check('at home, do i eat?', sen).should.be.false
+        check('Do I eat at home', sen).should.be.false
+        check('Do I eat at home!', sen).should.be.false
+        check('is I eat at home?', sen).should.be.false
+        check('Do eat at home?', sen).should.be.false
+        check('Do I at home?', sen).should.be.false
+        check('Does I eat at home?', sen).should.be.false
+        check('Did I eat at home?', sen).should.be.false
+        check('Do I drink at home?', sen).should.be.false
+        check('Do you eat at home?', sen).should.be.false
+        check('Do I am eat at home?', sen).should.be.false
+        check("Do I'm eat at home?", sen).should.be.false
 
       it 'questions with an "I" subject and an adjective', ->
 

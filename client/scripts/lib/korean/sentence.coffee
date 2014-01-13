@@ -13,6 +13,10 @@ build = (sentence) ->
 
   result = []
 
+  if sentence.location?
+    location = sentence.location.korean
+    result.push add.activeLocation(location)
+
   subject = sentence.subject.korean
   result.push add.subject(subject)
 
@@ -52,6 +56,10 @@ check = (answer, sentence) ->
     result = no if lastWord isnt sentence.adjective.korean
 
   result = no if words.indexOf(add.subject(sentence.subject.korean)) is -1
+
+  if sentence.location?
+    expectedLength += 1
+    result = no if words.indexOf(add.activeLocation(sentence.location.korean)) is -1
 
   if sentence.object?
     expectedLength += 1

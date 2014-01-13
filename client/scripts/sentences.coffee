@@ -9,6 +9,7 @@ $(document).ready ->
 
   jsonData = $.parseJSON($('#sentence-data').html())
   subjects = jsonData.subjects
+  locations = jsonData.locations
   verbs = jsonData.verbs
   adjectives = jsonData.adjectives
 
@@ -29,13 +30,14 @@ $(document).ready ->
         sentence.verb = verbs.sample()
         if sentence.verb.objects? and coinFlip()
           sentence.object = sentence.verb.objects.sample()
+        if coinFlip(.3)
+          sentence.location = locations.sample()
       else
         sentence.adjective = adjectives.sample()
 
+
       if coinFlip(.25)
         sentence.question = yes
-      else if coinFlip(.05)
-        sentence.exclamation = yes
 
       answerLanguage = options.answerLanguage
       if options.questionLanguage is 'korean'

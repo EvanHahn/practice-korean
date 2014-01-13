@@ -36,6 +36,14 @@ describe 'Korean', ->
           verb: { korean: '먹어요' }
         sentence.should.equal '민지가 김치를 먹어요.'
 
+      it 'sentences with a subject, object, location and verb', ->
+        sentence = build
+          location: { korean: '집' }
+          subject: { korean: '민지' }
+          object: { korean: '김치' }
+          verb: { korean: '먹어요' }
+        sentence.should.equal '집에서 민지가 김치를 먹어요.'
+
       it 'questions with a subject and verb', ->
         sentence = build
           question: yes
@@ -62,30 +70,34 @@ describe 'Korean', ->
       beforeEach ->
         check = korean.sentence.check
 
-      it 'sentences with subject, object, verb', ->
+      it 'sentences with subject, object, location, verb', ->
 
         sen =
+          location: { korean: '집' }
           subject: { korean: '민지' }
           object: { korean: '김치' }
           verb: { korean: '먹어요' }
 
-        check('민지가 김치를 먹어요', sen).should.be.true
-        check('민지가 김치를 먹어요.', sen).should.be.true
-        check('민지가 김치를 먹어요!', sen).should.be.true
-        check('김치를 민지가 먹어요', sen).should.be.true
+        check('집에서 민지가 김치를 먹어요', sen).should.be.true
+        check('집에서 민지가 김치를 먹어요.', sen).should.be.true
+        check('집에서 민지가 김치를 먹어요!', sen).should.be.true
+        check('집에서 김치를 민지가 먹어요', sen).should.be.true
+        check('김치를 집에서 민지가 먹어요', sen).should.be.true
 
-        check('민지가 민지가 김치를 먹어요', sen).should.be.false
-        check('민지가 김치를 먹어요?', sen).should.be.false
-        check('민지가 김치을 먹어요', sen).should.be.false
-        check('민지이 김치를 먹어요', sen).should.be.false
-        check('민지가 먹어요 김치를', sen).should.be.false
-        check('먹어요 민지가 김치를', sen).should.be.false
-        check('민지 김치를 먹어요', sen).should.be.false
-        check('민지가 김치 먹어요', sen).should.be.false
-        check('민지 김치 먹어요', sen).should.be.false
-        check('미나가 김치를 먹어요', sen).should.be.false
+        check('집에 민지가 김치를 먹어요', sen).should.be.false
+        check('집에서 민지가 민지가 김치를 먹어요', sen).should.be.false
+        check('집에서 민지가 김치를 먹어요?', sen).should.be.false
+        check('집에서 민지가 김치을 먹어요', sen).should.be.false
+        check('집에서 민지이 김치를 먹어요', sen).should.be.false
+        check('집에서 민지가 먹어요 김치를', sen).should.be.false
+        check('집에서 먹어요 민지가 김치를', sen).should.be.false
+        check('집에서 민지 김치를 먹어요', sen).should.be.false
+        check('집에서 민지가 김치 먹어요', sen).should.be.false
+        check('집에서 민지 김치 먹어요', sen).should.be.false
+        check('집에서 미나가 김치를 먹어요', sen).should.be.false
         check('민지가 음식을 먹어요', sen).should.be.false
         check('민지가 김치를 있어요', sen).should.be.false
+        check('민지가 김치를 먹어요', sen).should.be.false
         check('김치를 먹어요', sen).should.be.false
         check('민지가 먹어요', sen).should.be.false
         check('민지가 김치를', sen).should.be.false
@@ -172,3 +184,8 @@ describe 'Korean', ->
 
     it 'changes 저 to 제가', ->
       add.subject('저').should.equal '제가'
+
+  describe 'activeLocation function', ->
+
+    it 'adds 에서', ->
+      add.activeLocation('집').should.equal '집에서'

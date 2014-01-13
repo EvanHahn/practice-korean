@@ -31,5 +31,6 @@ add =
       return '제' + particle
     else
       return word + particle
+  activeLocation: (word) -> word + '에서'
 
 module.exports = { object, topic, subject, add }
