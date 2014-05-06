@@ -1,3 +1,4 @@
+require 'sugar'
 sample = require './lib/sample.coffee'
 after = require './lib/after.coffee'
 
@@ -34,6 +35,42 @@ module.exports = (options) ->
 
       $languageSelect.on 'change', (event) ->
         passOptions.languageSelection = event.target.value
+        newQuestion()
+
+    if options.sliders
+      sliders = options.sliders
+      passOptions.sliders = {}
+    else
+      sliders = {}
+
+    Object.keys(sliders).forEach (sliderName) ->
+
+      sliderOptions = sliders[sliderName]
+      minimum = sliderOptions.range[0]
+      maximum = sliderOptions.range[1]
+      startAt = sliderOptions.start
+      step = sliderOptions.step or 1
+
+      $control = $('<div></div>')
+      $label = $('<label></label>')
+      $label.prop('for', sliderName.dasherize())
+      $label.text(sliderName)
+      $slider = $('<input type="range"></input>')
+      $slider.prop('min', minimum)
+      $slider.prop('max', maximum)
+      $slider.prop('step', step)
+      $slider.val(startAt)
+      $slider.prop('id', sliderName.dasherize())
+      $value = $('<span><span>')
+      $value.text(startAt)
+
+      $control.append $label, ' ', $slider, ' ', $value
+      $optionsForm.append $control
+
+      passOptions.sliders[sliderName] = $slider.get(0)
+
+      $slider.on 'change', (event) ->
+        $value.text($slider.val())
         newQuestion()
 
     $container.append $optionsForm if $optionsForm.text()
