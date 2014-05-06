@@ -62,7 +62,7 @@ module.exports = (options) ->
       $slider.val(startAt)
       $slider.prop('id', sliderName.dasherize())
       $value = $('<span><span>')
-      $value.text(startAt)
+      $value.text(startAt.format())
 
       $control.append $label, ' ', $slider, ' ', $value
       $optionsForm.append $control
@@ -70,7 +70,7 @@ module.exports = (options) ->
       passOptions.sliders[sliderName] = $slider.get(0)
 
       $slider.on 'change', (event) ->
-        $value.text($slider.val())
+        $value.text($slider.val().toNumber().format())
         newQuestion()
 
     $container.append $optionsForm if $optionsForm.text()

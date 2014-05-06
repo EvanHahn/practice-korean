@@ -4,7 +4,7 @@ getKorean = (n) ->
   "TODO"
 
 random = (min, max) ->
-  size = Math.abs(max - min)
+  size = max - min
   return Math.floor(Math.random() * size) + min
 
 $(document).ready ->
@@ -14,17 +14,18 @@ $(document).ready ->
   startAsking
 
     languageSelect: true
-
     sliders:
-      'Minimum': { range: [0, 99999], start: 0, step: 100 }
-      'Maximum': { range: [0, 99999], start: 2000, step: 100 }
+      'Minimum': { range: [0, 1e6], start: 0, step: 100 }
+      'Maximum': { range: [0, 1e6], start: 2000, step: 100 }
 
     ask: (options) ->
 
       minSlider = options.sliders['Minimum']
       maxSlider = options.sliders['Maximum']
-      minimum = minSlider.value
-      maximum = maxSlider.value
+      minimum = parseInt minSlider.value
+      maximum = parseInt maxSlider.value
+      if maximum < minimum
+        [maximum, minimum] = [minimum, maximum]
 
       number = random(minimum, maximum)
       koreanNumber = getKorean number
@@ -33,7 +34,7 @@ $(document).ready ->
         question = koreanNumber
         answer = number
       else
-        question = number
+        question = number.format()
         answer = koreanNumber
 
       return question
@@ -43,4 +44,4 @@ $(document).ready ->
       theAnswer = answer.toString().replace(/\s+/g, '')
       return yourAnswer is theAnswer
 
-    rightAnswer: -> answer
+    rightAnswer: -> answer.format()
